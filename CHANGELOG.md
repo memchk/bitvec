@@ -11,6 +11,13 @@ All notable changes will be documented in this file.
 - Pluralize `BitSlice::count_one()` and `BitSlice::count_zero()` function names.
 - Fix documentation and comments.
 
+### 2018 Edition Branch
+
+The branch `edition/2018` implements the changes necessary for use under the
+2018 edition of Rust. It can be used with the `-e2018` version suffix starting
+with `0.6.0`. This branch and version suffix will track all ongoing development
+until the minimum stable compiler version on the main trunk uses 2018 edition.
+
 ## 0.5.0
 
 ### Added

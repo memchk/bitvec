@@ -80,8 +80,8 @@ macro_rules! bitvec {
 /// source is 8x larger than it needs to be.
 ///
 /// I'm sure there is a way, but I don’t think I need to spend the effort yet.
-#[macro_export]
 #[doc(hidden)]
+#[macro_export]
 macro_rules! __bitvec_impl {
 	( $end:ident , $prim:ty ; $( $elt:expr ),* ) => {{
 		let init: &[bool] = &[
@@ -168,7 +168,7 @@ macro_rules! __bitvec_shift {
 #[cfg(test)]
 mod tests {
 	#[allow(unused_imports)]
-	use {
+	use crate::{
 		BigEndian,
 		LittleEndian,
 	};

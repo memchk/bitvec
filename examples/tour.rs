@@ -6,7 +6,6 @@ a sample of the various operations that can be applied to it.
 This example prints **a lot** of text to the console.
 !*/
 
-#[macro_use]
 extern crate bitvec;
 
 use bitvec::*;

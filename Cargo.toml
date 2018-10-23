@@ -1,6 +1,6 @@
 [package]
 name = "bitvec"
-version = "0.6.0"
+version = "0.6.0-e2018"
 authors = [
 	"myrrlyn <myrrlyn@outlook.com>",
 ]
@@ -9,5 +9,6 @@ documentation = "https://docs.rs/bitvec"
 homepage = "https://myrrlyn.net/bitvec"
 license-file = "LICENSE.txt"
 repository = "https://github.com/myrrlyn/bitvec"
+edition = "2018"
 
 [dependencies]

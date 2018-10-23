@@ -35,7 +35,7 @@ reference or mutable reference, and has the advantage that now it can be a
 count bits using `.into()`.
 !*/
 
-use {
+use crate::{
 	Bits,
 	Endian,
 	BigEndian,

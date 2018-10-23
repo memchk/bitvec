@@ -33,15 +33,16 @@ iteration in both directions, bit shifts, and, of course, access to the
 underlying storage as a slice.
 !*/
 
+#[doc(hidden)]
 #[macro_use]
-mod macros;
+pub mod macros;
 
 mod bits;
 mod endian;
 mod slice;
 mod vec;
 
-pub use {
+pub use crate::{
 	bits::Bits,
 	endian::*,
 	macros::*,

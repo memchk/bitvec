@@ -5,7 +5,7 @@
 traversal of an element in the `BitVec` storage.
 !*/
 
-use super::bits::Bits;
+use crate::Bits;
 
 /// Travels an element starting at the Most Significant Bit and ending at the
 /// Least Significant Bit.

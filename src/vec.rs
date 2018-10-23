@@ -7,7 +7,7 @@ The `BitSlice` module discusses the design decisions for the separation between
 slice and vector types.
 !*/
 
-use {
+use crate::{
 	BitSlice,
 	Bits,
 	Endian,
