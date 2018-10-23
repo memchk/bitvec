@@ -50,6 +50,11 @@ extern crate bitvec;
 use bitvec::*;
 ```
 
+> Note: For 2018 edition Rust, use `"0.6.0-e2018"` as your version string, and
+> elide the `#[macro_use]` import directive. The `use bitvec::*;` import is
+> still recommended for using the `bitvec!` macro while I figure out how to
+> properly use, but conceal, implementation details of the macro suite.
+
 This gives you access to the `bitvec!` macro for building `BitVec` types
 similarly to the `vec!` macro, and imports the following symbols:
 
