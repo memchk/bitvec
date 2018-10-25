@@ -9,5 +9,6 @@ documentation = "https://docs.rs/bitvec"
 homepage = "https://myrrlyn.net/bitvec"
 license-file = "LICENSE.txt"
 repository = "https://github.com/myrrlyn/bitvec"
+edition = "2018"
 
 [dependencies]

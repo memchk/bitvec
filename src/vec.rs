@@ -1297,6 +1297,7 @@ where E: crate::Endian, T: crate::Bits {
 	fn deref(&self) -> &Self::Target {
 		//  `BitVec`'s representation of its inner `Vec` matches exactly the
 		//  invariants of how `BitSlice` references must look. This is fine.
+		#[allow(clippy::transmute_ptr_to_ptr)]
 		unsafe { mem::transmute(&self.inner as &[T]) }
 	}
 }
@@ -1319,6 +1320,8 @@ where E: crate::Endian, T: crate::Bits {
 	/// assert!(bref.get(5));
 	/// ```
 	fn deref_mut(&mut self) -> &mut Self::Target {
+		//  See `Deref::deref`.
+		#[allow(clippy::transmute_ptr_to_ptr)]
 		unsafe { mem::transmute(&mut self.inner as &mut [T]) }
 	}
 }
@@ -1572,6 +1575,9 @@ where E: crate::Endian, T: crate::Bits {
 	/// assert_eq!(0b0000_1110, bv.as_ref()[0]);
 	/// assert_eq!(bv.len(), 4);
 	/// ```
+	//  Clippy errors when it sees arithmetic ops in an arithmetic impl that are
+	//  not the operation being implemented. Clippy is, at times, foolish.
+	#[allow(clippy::suspicious_op_assign_impl)]
 	fn shl_assign(&mut self, shamt: usize) {
 		let len = self.len();
 		if shamt >= len {
@@ -1703,6 +1709,10 @@ where E: crate::Endian, T: crate::Bits {
 		}
 		for idx in (0 .. old_len).rev() {
 			let val = self.get(idx);
+			//  Clippy errors when it sees arithmetic ops in an arithmetic impl
+			//  that are not the operation being implemented. Clippy is, at
+			//  times, foolish.
+			#[allow(clippy::suspicious_op_assign_impl)]
 			self.set(idx + shamt, val);
 		}
 		for idx in 0 .. shamt {

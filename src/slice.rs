@@ -743,6 +743,9 @@ where E: crate::Endian, T: 'a + crate::Bits {
 		let (ptr, len): (*const T, usize) = (src.as_ptr(), src.len());
 		assert!(len <= T::MAX_ELT, "Source slice length out of range!");
 		unsafe {
+			//  This is the correct construction of an `&BitSlice` wide pointer
+			//  from a standard slice wide pointer.
+			#[allow(clippy::transmute_ptr_to_ptr)]
 			mem::transmute(
 				slice::from_raw_parts(ptr, len << T::BITS)
 			)
@@ -775,6 +778,9 @@ where E: crate::Endian, T: 'a + crate::Bits {
 		let (ptr, len): (*mut T, usize) = (src.as_mut_ptr(), src.len());
 		assert!(len <= T::MAX_ELT, "Source slice length out of range!");
 		unsafe {
+			//  This is the correct construction of an `&BitSlice` wide pointer
+			//  from a standard slice wide pointer.
+			#[allow(clippy::transmute_ptr_to_ptr)]
 			mem::transmute(
 				slice::from_raw_parts_mut(ptr, len << T::BITS)
 			)
@@ -926,6 +932,16 @@ where E: crate::Endian, T: crate::Bits {
 	/// *numr += &one;
 	/// assert_eq!(numr, &nums[2] as &BitSlice);
 	/// ```
+	//  Clippy thinks single-letter names are risky. This is generall an apt
+	//  assumption, but here, the letters `a`, `b`, `c`, `y`, and `z` have
+	//  fairly standardized, well-known meanings in digital arithmetic.
+	//  For clarity, however:
+	//  - a : The primary addend bit
+	//  - b : The secondary addend bit
+	//  - c : The carry-in bit
+	//  - y : The sum bit
+	//  - z : The carry-out bit
+	#[allow(clippy::many_single_char_names)]
 	fn add_assign(&mut self, addend: &'a BitSlice<E, T>) {
 		use std::iter::repeat;
 		//  zero-extend the addend if it’s shorter than self
@@ -1143,6 +1159,12 @@ where E: crate::Endian, T: 'a + crate::Bits {
 			//  Turn a slice reference `[T; 1]` into a bit-slice reference
 			//  `[u1; 1]`
 			let addend: &BitSlice<E, T> = {
+				//  This is safe because an instance of `&[T; 1]` has structure
+				//  `{ ptr: _, len: 1 }` and that structure when interpreted as
+				//  an `&BitSlice` refers to a slice of a single bit. Conversion
+				//  from slice to `BitSlice` is a strictly narrowing operation,
+				//  and is not a fault.
+				#[allow(clippy::transmute_ptr_to_ptr)]
 				unsafe { mem::transmute::<&[T], &BitSlice<E, T>>(&elt) }
 			};
 			//  And add it (if the slice was not all-ones).
@@ -1230,6 +1252,9 @@ where E: crate::Endian, T: crate::Bits {
 	/// assert_eq!("00000100 0", &format!("{}", bits));
 	/// //               ^ former tail
 	/// ```
+	//  Clippy errors when it sees arithmetic ops in an arithmetic impl that are
+	//  not the operation being implemented. Clippy is, at times, foolish.
+	#[allow(clippy::suspicious_op_assign_impl)]
 	fn shl_assign(&mut self, shamt: usize) {
 		let len = self.len();
 		//  Bring the shift amount down into the slice's domain.
@@ -1325,6 +1350,9 @@ where E: crate::Endian, T: crate::Bits {
 	/// assert_eq!("00010000 0", &format!("{}", bits));
 	/// //             ^ former head
 	/// ```
+	//  Clippy errors when it sees arithmetic ops in an arithmetic impl that are
+	//  not the operation being implemented. Clippy is, at times, foolish.
+	#[allow(clippy::suspicious_op_assign_impl)]
 	fn shr_assign(&mut self, shamt: usize) {
 		let len = self.len();
 		//  Bring the shift amount down into the slice's domain.
